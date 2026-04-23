@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.pvmaksim.RAGAssistant</string>
+
+    <key>CFBundleName</key>
+    <string>RAGAssistant</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>RAG Dev Assistant</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+
+    <!-- Menu bar only — без Dock иконки -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- Разрешения -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <!-- Разрешаем localhost для локального Docker -->
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
+
+    <key>NSUserNotificationsUsageDescription</key>
+    <string>RAG Dev Assistant отправляет уведомления о завершении сканирования проектов.</string>
+
+    <key>NSHumanReadableCopyright</key>
+    <string>© 2026 PVMaksim</string>
+</dict>
+</plist>

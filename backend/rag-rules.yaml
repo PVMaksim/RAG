@@ -1,0 +1,419 @@
+# rag-rules.yaml
+# Документ-правила для сканера Lite Graph RAG
+# Версия: 1.2 (учитывает SKILL_IT_PROJECTS_RU — стандарт PVMaksim)
+#
+# Принцип работы:
+#   1. always_exclude    → пропустить файл немедленно (проверяется первым)
+#   2. respect_gitignore → исключить всё из .gitignore проекта
+#   3. file_types        → из оставшихся — решить что читать и как
+#   4. path_rules        → скорректировать приоритет по пути
+#   5. content_mode      → full | signatures | metadata_only
+#   6. graph_role        → роль ноды в графе
+# ─────────────────────────────────────────────────────────────────────────────
+
+# =============================================================================
+# 1. ГЛОБАЛЬНЫЕ ПРАВИЛА
+# =============================================================================
+global:
+
+  respect_gitignore: true
+
+  always_exclude:
+    # Зависимости
+    - "node_modules/**"
+    - ".venv/**"
+    - "venv/**"
+    - "env/**"
+    - "__pycache__/**"
+    - "**/*.pyc"
+    - "**/*.pyo"
+    - ".dart_tool/**"
+    - ".pub-cache/**"
+    - ".pub/**"
+    - ".flutter-plugins"
+    - ".flutter-plugins-dependencies"
+    # Билды
+    - "build/**"
+    - "dist/**"
+    - ".next/**"
+    - ".nuxt/**"
+    - "out/**"
+    - "*.egg-info/**"
+    - ".mypy_cache/**"
+    - ".pytest_cache/**"
+    - ".ruff_cache/**"
+    - "coverage/**"
+    # Секреты — НИКОГДА
+    - ".env"
+    - "**/*.pem"
+    - "**/*.key"
+    - "**/*.p12"
+    - "**/*.pfx"
+    - "secrets/**"
+    - "**/*secret*"
+    - "**/*credentials*"
+    # Медиа и бинарники
+    - "**/*.png"
+    - "**/*.jpg"
+    - "**/*.jpeg"
+    - "**/*.gif"
+    - "**/*.svg"
+    - "**/*.ico"
+    - "**/*.woff"
+    - "**/*.woff2"
+    - "**/*.ttf"
+    - "**/*.mp4"
+    - "**/*.mp3"
+    - "**/*.zip"
+    - "**/*.tar.gz"
+    # Lock-файлы — слишком большие, не несут логики
+    - "poetry.lock"
+    - "yarn.lock"
+    - "pnpm-lock.yaml"
+    - "Pipfile.lock"
+    - "package-lock.json"
+    # IDE / OS
+    - ".idea/**"
+    - ".vscode/**"
+    - "**/.DS_Store"
+    - "**/*.swp"
+    - ".git/**"
+
+  max_file_size_bytes: 102400   # 100 KB — крупнее → metadata_only
+
+  # Файлы, которые всегда читаются полностью (высший приоритет)
+  ai_context_files:
+    - "CLAUDE.md"      # контекст для ИИ — стандарт PVMaksim
+    - "MEMORY.md"      # дневник разработки — стандарт PVMaksim
+    - "README.md"
+    - ".env.example"   # шаблон переменных (без реальных секретов)
+
+  entrypoint_filenames:
+    - "main.py"
+    - "index.ts"
+    - "index.js"
+    - "app.py"
+    - "bot.py"
+    - "run.py"
+    - "server.py"
+    - "manage.py"
+    - "main.ts"
+    - "main.dart"
+
+# =============================================================================
+# 2. ПРАВИЛА ПО ТИПУ ФАЙЛА
+#
+# content_mode:
+#   full          — читать весь файл целиком
+#   signatures    — только def/class/export fn (без тела функций)
+#   metadata_only — только путь, имя, размер (содержимое не читать)
+# =============================================================================
+file_types:
+
+  - extensions: [".py"]
+    include: true
+    content_mode: signatures
+    graph_role: code
+    priority: high
+
+  - extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs"]
+    include: true
+    content_mode: signatures
+    graph_role: code
+    priority: high
+    exclude_patterns:
+      - "**/*.test.ts"
+      - "**/*.spec.ts"
+      - "**/*.test.js"
+      - "**/*.spec.js"
+      - "**/*.d.ts"
+      - "**/*.min.js"
+
+  - extensions: [".dart"]
+    include: true
+    content_mode: signatures
+    graph_role: code
+    priority: high
+    exclude_patterns:
+      - "**/*.g.dart"
+      - "**/*.freezed.dart"
+      - "**/*.mocks.dart"
+
+  - extensions: [".yaml", ".yml"]
+    include: true
+    content_mode: full
+    graph_role: config
+    priority: high
+    exclude_patterns:
+      - ".github/workflows/**"   # CI/CD не нужен для поиска по логике
+
+  - extensions: [".toml"]
+    include: true
+    content_mode: full
+    graph_role: config
+    priority: medium
+
+  - extensions: [".json"]
+    include: true
+    content_mode: full
+    graph_role: config
+    priority: medium
+    max_size_override_bytes: 51200
+    exclude_patterns:
+      - "tsconfig*.json"
+      - ".eslintrc.json"
+      - ".prettierrc.json"
+      - "jest.config.json"
+
+  - extensions: [".ini", ".cfg", ".conf"]
+    include: true
+    content_mode: full
+    graph_role: config
+    priority: medium
+
+  - extensions: [".md"]
+    include: true
+    content_mode: full
+    graph_role: documentation
+    priority: high
+
+  - extensions: [".txt"]
+    include: true
+    content_mode: full
+    graph_role: documentation
+    priority: low
+    include_only_filenames:
+      - "requirements.txt"
+      - "requirements-dev.txt"
+      - "requirements-prod.txt"
+
+  - extensions: [".sh", ".bash"]
+    include: true
+    content_mode: full
+    graph_role: script
+    priority: medium
+
+  - filenames: ["Dockerfile", "Dockerfile.*"]
+    include: true
+    content_mode: full
+    graph_role: infrastructure
+    priority: medium
+
+  - extensions: [".sql"]
+    include: true
+    content_mode: full
+    graph_role: database
+    priority: medium
+
+  # Явно исключаемые типы
+  - extensions: [".csv", ".xlsx", ".xls", ".pdf", ".docx"]
+    include: false
+
+# =============================================================================
+# 3. ПРАВИЛА ПО ПУТИ
+# =============================================================================
+path_rules:
+
+  # Критически важные файлы контекста (стандарт PVMaksim)
+  - pattern: "CLAUDE.md"
+    action: include
+    priority: critical
+    content_mode: full
+
+  - pattern: "MEMORY.md"
+    action: include
+    priority: critical
+    content_mode: full
+
+  - pattern: "README.md"
+    action: include
+    priority: critical
+    content_mode: full
+
+  - pattern: ".env.example"
+    action: include
+    priority: high
+    content_mode: full
+
+  - pattern: "docker-compose*.yml"
+    action: include
+    priority: high
+    content_mode: full
+
+  # Основной код
+  - pattern: "src/**"
+    action: include
+    priority: high
+
+  - pattern: "lib/**"           # Flutter
+    action: include
+    priority: high
+
+  # Вспомогательные
+  - pattern: "scripts/**"
+    action: include
+    priority: medium
+
+  - pattern: "docs/**"
+    action: include
+    priority: medium
+
+  # Тесты — только структура, не тело
+  - pattern: "tests/**"
+    action: include
+    priority: low
+    content_mode: metadata_only
+
+  - pattern: "test/**"
+    action: include
+    priority: low
+    content_mode: metadata_only
+
+  # Исключения
+  - pattern: ".github/workflows/**"
+    action: exclude
+
+  - pattern: "docker/**"
+    action: include
+    priority: medium
+    notes: "Dockerfile лежит в docker/ по стандарту PVMaksim"
+
+# =============================================================================
+# 4. АВТООПРЕДЕЛЕНИЕ ТИПА ПРОЕКТА
+# =============================================================================
+project_type_detection:
+
+  - type: telegram_bot
+    markers:
+      files_exist: ["src/handlers/"]
+      requirements_contain_any: ["aiogram", "telebot", "python-telegram-bot"]
+
+  - type: fastapi_service
+    markers:
+      requirements_contain_any: ["fastapi", "uvicorn"]
+
+  - type: nextjs_app
+    markers:
+      files_exist_any: ["next.config.js", "next.config.mjs", "next.config.ts"]
+
+  - type: flutter_app
+    markers:
+      files_exist: ["pubspec.yaml", "lib/main.dart"]
+
+  - type: python_script
+    markers:
+      files_exist: ["requirements.txt"]
+      files_not_exist: ["src/handlers/"]
+
+  - type: unknown
+
+# =============================================================================
+# 5. ДОПОЛНИТЕЛЬНЫЕ ПРАВИЛА ПО ТИПУ ПРОЕКТА
+# =============================================================================
+project_type_rules:
+
+  telegram_bot:
+    # Граф-рёбра специфичные для бота
+    graph_edges:
+      - from: "src/main.py"
+        to: "src/handlers/**"
+        relation: registers
+      - from: "src/handlers/**"
+        to: "src/database/models.py"
+        relation: uses
+      - from: "src/middlewares/error_handler.py"
+        to: "src/main.py"
+        relation: attached_to
+      - from: "src/config.py"
+        to: "src/main.py"
+        relation: configures
+    key_paths:
+      - "src/handlers/**"
+      - "src/middlewares/**"
+      - "src/keyboards/**"
+      - "src/database/models.py"
+      - "src/database/connection.py"
+      - "src/config.py"
+      - "src/main.py"
+
+  fastapi_service:
+    graph_edges:
+      - from: "src/main.py"
+        to: "src/routers/**"
+        relation: includes
+      - from: "src/routers/**"
+        to: "src/schemas/**"
+        relation: validates_with
+      - from: "src/routers/**"
+        to: "src/models/**"
+        relation: queries
+    key_paths:
+      - "src/routers/**"
+      - "src/models/**"
+      - "src/schemas/**"
+      - "src/dependencies/**"
+      - "src/config.py"
+
+  nextjs_app:
+    extra_exclude:
+      - "**/*.test.tsx"
+      - "**/*.stories.tsx"
+    key_paths:
+      - "src/app/**"
+      - "src/components/**"
+      - "src/lib/**"
+      - "src/hooks/**"
+      - "src/types/**"
+
+  flutter_app:
+    extra_exclude:
+      - "lib/**/*.g.dart"
+      - "lib/**/*.freezed.dart"
+    key_paths:
+      - "lib/**"
+      - "pubspec.yaml"
+
+  python_script:
+    key_paths:
+      - "*.py"
+      - "scripts/**"
+
+# =============================================================================
+# 6. ТИПЫ НОД И РЁБЕР ГРАФА
+# =============================================================================
+graph:
+  node_types:
+    - project        # корень
+    - file
+    - function       # def / async def
+    - class
+    - config
+    - entrypoint     # main.py, index.ts
+    - documentation  # README, CLAUDE.md, MEMORY.md
+    - infrastructure # Dockerfile, docker-compose.yml
+    - database       # models.py, .sql
+    - script         # .sh
+
+  edge_types:
+    - contains       # project → file, file → function
+    - imports        # file → file
+    - registers      # main → handlers
+    - uses           # handler → model
+    - configures     # config → module
+    - documents      # CLAUDE.md → project
+    - depends_on     # docker-compose depends_on
+
+# =============================================================================
+# 7. ЛОКАЛЬНОЕ ПЕРЕОПРЕДЕЛЕНИЕ НА УРОВНЕ ПРОЕКТА
+#    Если в корне проекта есть .rag-project.yaml — он мержится поверх.
+#
+#    Пример .rag-project.yaml:
+#    overrides:
+#      extra_exclude:
+#        - "src/legacy/**"
+#      extra_include:
+#        - "integrations/**"
+#      content_mode_overrides:
+#        "src/big_generated_file.py": metadata_only
+# =============================================================================
+per_project_override_file: ".rag-project.yaml"

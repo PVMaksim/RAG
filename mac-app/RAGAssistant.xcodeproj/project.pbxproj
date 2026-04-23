@@ -1,0 +1,265 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* ── Build configuration ─────────────────────────────────────────────── */
+
+		AA000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = RAGAssistant/Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pvmaksim.RAGAssistant";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				SDKROOT = macosx;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_ALLOWED = NO;
+			};
+			name = Debug;
+		};
+
+		AA000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = RAGAssistant/Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pvmaksim.RAGAssistant";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+
+		AA000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+
+		AA000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+
+/* ── Sources ─────────────────────────────────────────────────────────── */
+
+		AA000010 /* RAGAssistantApp.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = RAGAssistantApp.swift;
+			sourceTree = "<group>";
+		};
+		AA000011 /* AppDelegate.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = AppDelegate.swift;
+			sourceTree = "<group>";
+		};
+		AA000012 /* AppState.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = AppState.swift;
+			sourceTree = "<group>";
+		};
+		AA000020 /* MenuBarView.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = MenuBarView.swift;
+			sourceTree = "<group>";
+		};
+		AA000021 /* SettingsView.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = SettingsView.swift;
+			sourceTree = "<group>";
+		};
+		AA000030 /* HotkeyService.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = HotkeyService.swift;
+			sourceTree = "<group>";
+		};
+		AA000031 /* KeychainService.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = KeychainService.swift;
+			sourceTree = "<group>";
+		};
+		AA000032 /* NotificationBridge.swift */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = NotificationBridge.swift;
+			sourceTree = "<group>";
+		};
+		AA000040 /* Info.plist */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Info.plist;
+			sourceTree = "<group>";
+		};
+		AA000050 /* RAGAssistant.app */ = {
+			isa = PBXFileReference;
+			explicitFileType = wrapper.application;
+			includeInIndex = 0;
+			path = RAGAssistant.app;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+
+/* ── Groups ──────────────────────────────────────────────────────────── */
+
+		AA000100 /* RAGAssistant */ = {
+			isa = PBXGroup;
+			children = (
+				AA000110 /* App */,
+				AA000120 /* Views */,
+				AA000130 /* Services */,
+				AA000140 /* Resources */,
+			);
+			path = RAGAssistant;
+			sourceTree = "<group>";
+		};
+		AA000110 /* App */ = {
+			isa = PBXGroup;
+			children = (AA000010, AA000011, AA000012);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AA000120 /* Views */ = {
+			isa = PBXGroup;
+			children = (AA000020, AA000021);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AA000130 /* Services */ = {
+			isa = PBXGroup;
+			children = (AA000030, AA000031, AA000032);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AA000140 /* Resources */ = {
+			isa = PBXGroup;
+			children = (AA000040);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AA000200 /* Products */ = {
+			isa = PBXGroup;
+			children = (AA000050);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA000300 /* MainGroup */ = {
+			isa = PBXGroup;
+			children = (AA000100, AA000200);
+			sourceTree = "<group>";
+		};
+
+/* ── Build phases ────────────────────────────────────────────────────── */
+
+		AA000400 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000410 /* RAGAssistantApp.swift */,
+				AA000411 /* AppDelegate.swift */,
+				AA000412 /* AppState.swift */,
+				AA000420 /* MenuBarView.swift */,
+				AA000421 /* SettingsView.swift */,
+				AA000430 /* HotkeyService.swift */,
+				AA000431 /* KeychainService.swift */,
+				AA000432 /* NotificationBridge.swift */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA000410 = { isa = PBXBuildFile; fileRef = AA000010; };
+		AA000411 = { isa = PBXBuildFile; fileRef = AA000011; };
+		AA000412 = { isa = PBXBuildFile; fileRef = AA000012; };
+		AA000420 = { isa = PBXBuildFile; fileRef = AA000020; };
+		AA000421 = { isa = PBXBuildFile; fileRef = AA000021; };
+		AA000430 = { isa = PBXBuildFile; fileRef = AA000030; };
+		AA000431 = { isa = PBXBuildFile; fileRef = AA000031; };
+		AA000432 = { isa = PBXBuildFile; fileRef = AA000032; };
+
+		AA000500 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+
+		AA000600 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (AA000610);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA000610 = { isa = PBXBuildFile; fileRef = AA000040; };
+
+/* ── Target ──────────────────────────────────────────────────────────── */
+
+		AA000700 /* RAGAssistant */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA000710;
+			buildPhases = (AA000400, AA000500, AA000600);
+			buildRules = ();
+			dependencies = ();
+			name = RAGAssistant;
+			productName = RAGAssistant;
+			productReference = AA000050;
+			productType = "com.apple.product-type.application";
+		};
+		AA000710 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (AA000001, AA000002);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+
+/* ── Project ─────────────────────────────────────────────────────────── */
+
+		AA000800 /* Project */ = {
+			isa = PBXProject;
+			buildConfigurationList = AA000810;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ru;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, ru, Base);
+			mainGroup = AA000300;
+			productRefGroup = AA000200;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (AA000700);
+		};
+		AA000810 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (AA000003, AA000004);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+
+	};
+	rootObject = AA000800;
+}

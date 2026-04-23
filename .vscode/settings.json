@@ -1,0 +1,19 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
+    },
+    "yaml.customTags": [
+        "!secret scalar",
+        "!env scalar",
+        "!steps scalar",
+        "!jobs scalar"
+    ],
+    "files.associations": {
+        "*.yml": "yaml",
+        "deploy.yml": "yaml"
+    },
+    "yaml.format.enable": true,
+    "yaml.validate": false,
+    "python.analysis.typeCheckingMode": "off",
+    "python.linting.enabled": false
+}

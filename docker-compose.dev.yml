@@ -1,0 +1,62 @@
+version: '3.9'
+
+# ── Локальная разработка (override) ──────────────────────────────────────────
+# Запуск: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+#
+# Что меняет этот файл:
+#   - nginx слушает на :8080 вместо :80/:443
+#   - backend и frontend с hot reload через volume mount
+#   - Твоя папка ~/Projects монтируется в /app/projects
+
+services:
+
+  nginx:
+    ports:
+      - "8080:80"   # Локально: http://localhost:8080
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Убираем certbot volumes в dev режиме
+    depends_on:
+      - frontend
+      - backend
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules        # Не перетирать node_modules хостовыми
+      - /app/.next               # Не перетирать .next хостовыми
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080/api
+      - NODE_ENV=development
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile.dev
+    volumes:
+      - ./backend/src:/app/src   # Hot reload: редактируешь → сервер перезапускается
+      - ./backend/rag-rules.yaml:/app/rag-rules.yaml
+      # ВАЖНО: монтируем твои локальные проекты
+      # Замени ~/Documents/Projects на путь к своим проектам
+      - ~/Documents/Projects:/app/projects
+      # Данные персистентны между перезапусками
+      - chroma_data:/app/data/chroma_db
+      - graph_data:/app/data
+      # SSH ключ для клонирования приватных git репозиториев
+      # Убедись что ~/.ssh/id_rsa существует и добавлен в GitHub/GitLab
+      # Или замени id_rsa на нужный ключ
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+    environment:
+      - DEBUG=true
+      - PROJECTS_BASE_PATH=/app/projects
+
+  # MCP в dev режиме — тот же порт
+  mcp-server:
+    ports:
+      - "27183:27183"
+
+# Volumes наследуются из основного docker-compose.yml
