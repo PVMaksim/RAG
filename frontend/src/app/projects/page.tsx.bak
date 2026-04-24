@@ -8,6 +8,7 @@ import { useSSE } from '@/hooks/useSSE'
 import { useProjects } from '@/hooks/useProjects'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? '/api'
 
 // ── Типы событий ──────────────────────────────────────────────────────────────
 
