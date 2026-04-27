@@ -20,6 +20,7 @@ from services.scanner import ProjectScanner
 from services.git_service import GitService, GitServiceError
 from storage.chroma_store import ChromaStore
 from storage.graph_store import GraphStore
+from pydantic import BaseModel, Field
 
 log = logging.getLogger(__name__)
 

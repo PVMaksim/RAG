@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     # ── Anthropic ──────────────────────────────────────────────────────────
-    anthropic_api_key: str = Field(..., env="ANTHROPIC_API_KEY")
+    ai_api_key: str = Field(..., env="AI_API_KEY")
     claude_model: str = Field("claude-sonnet-4-20250514", env="CLAUDE_MODEL")
 
     # ── Пути к хранилищам ─────────────────────────────────────────────────
@@ -77,12 +77,12 @@ class Settings(BaseSettings):
 
     # ── Валидаторы ────────────────────────────────────────────────────────────
 
-    @field_validator("anthropic_api_key")
+    @field_validator("ai_api_key")
     @classmethod
     def validate_api_key(cls, v: str) -> str:
         """API ключ должен начинаться с sk-ant- (формат Anthropic)."""
         if not v:
-            raise ValueError("ANTHROPIC_API_KEY не задан")
+            raise ValueError("AI_API_KEY не задан")
         if not v.startswith(("sk-ant-", "sk-")):
             raise ValueError(
                 "ANTHROPIC_API_KEY имеет неверный формат. "

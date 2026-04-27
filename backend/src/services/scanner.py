@@ -320,12 +320,12 @@ class ProjectScanner:
             return
 
         async with self._active_scans[project_name]:
-        rules = RulesLoader(self._rules_path)
-        rules.merge_project_overrides(project_path)
+            rules = RulesLoader(self._rules_path)
+            rules.merge_project_overrides(project_path)
 
-        file_filter = FileFilter(rules, project_path)
-        type_detector = ProjectTypeDetector(rules)
-        project_type = type_detector.detect(project_path)
+            file_filter = FileFilter(rules, project_path)
+            type_detector = ProjectTypeDetector(rules)
+            project_type = type_detector.detect(project_path)
 
         # Подсчёт общего числа файлов для прогресс-бара
         all_files = [f for f in project_path.rglob("*") if f.is_file()]
