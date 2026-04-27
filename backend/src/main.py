@@ -5,6 +5,7 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Request
 
 from config import get_settings
 from rate_limiter import limiter, _rate_limit_exceeded_handler
