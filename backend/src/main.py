@@ -95,7 +95,7 @@ async def health():
         checks["graph_store"] = {"status": "error", "detail": str(e)}
 
     checks["anthropic"] = {
-        "status": "ok" if settings.anthropic_api_key else "missing",
+        "status": "ok" if settings.ai_api_key else "missing",
         "model":  settings.claude_model,
     }
 

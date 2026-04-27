@@ -83,10 +83,10 @@ class Settings(BaseSettings):
         """API ключ должен начинаться с sk-ant- (формат Anthropic)."""
         if not v:
             raise ValueError("AI_API_KEY не задан")
-        if not v.startswith(("sk-ant-", "sk-")):
+        if not v.startswith(("sk-ant-", "sk-","sk-or-")):
             raise ValueError(
-                "ANTHROPIC_API_KEY имеет неверный формат. "
-                "Ожидается ключ начинающийся с 'sk-ant-'. "
+                "AI_API_KEY имеет неверный формат. "
+                "Ожидается ключ начинающийся с 'sk-ant-' или 'sk-or-'. "
                 "Получи ключ на console.anthropic.com"
             )
         return v
