@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.test
+    environment:
+      - AI_API_KEY=test-key-for-ci-cd
+      - DEBUG=true
+      - TELEGRAM_BOT_TOKEN=
+      - ADMIN_TELEGRAM_ID=
+    # Томы не нужны, так как код уже встроен в образ при сборке
+    # Но можно примонтировать, если хотите запускать без пересборки при изменении кода
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/tests:/app/tests

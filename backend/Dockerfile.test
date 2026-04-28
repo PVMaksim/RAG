@@ -1,0 +1,21 @@
+# backend/Dockerfile.test
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Устанавливаем зависимости
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir pytest pytest-asyncio pytest-cov python-multipart
+
+# Копируем исходный код И тесты
+COPY backend/src ./src
+COPY backend/tests ./tests
+
+# Устанавливаем переменные окружения по умолчанию
+ENV PYTHONPATH=/app/src
+ENV CHROMA_DB_PATH=/tmp/chroma
+ENV GRAPH_DB_PATH=/tmp/graph.db
+
+# Команда запуска тестов
+CMD ["pytest", "tests/", "-v", "--cov=src", "--cov-report=term-missing"]

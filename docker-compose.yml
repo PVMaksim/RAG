@@ -12,6 +12,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "3000:3000"
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - certbot_data:/etc/letsencrypt
