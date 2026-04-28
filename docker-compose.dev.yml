@@ -42,7 +42,7 @@ services:
       - ./backend/rag-rules.yaml:/app/rag-rules.yaml
       # ВАЖНО: монтируем твои локальные проекты
       # Замени ~/Documents/Projects на путь к своим проектам
-      - ~/Documents/Projects:/app/projects
+      - "/Users/macmax/Documents/Разработка IT"
       # Данные персистентны между перезапусками
       - chroma_data:/app/data/chroma_db
       - graph_data:/app/data
