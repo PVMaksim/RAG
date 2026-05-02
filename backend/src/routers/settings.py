@@ -59,7 +59,7 @@ async def get_settings_endpoint(
         debug            = settings.debug,
         cors_origins     = settings.cors_origins,
         # Флаги наличия секретов
-        has_anthropic_key  = bool(settings.anthropic_api_key),
+        has_anthropic_key  = bool(settings.ai_api_key),
         has_telegram       = bool(settings.telegram_bot_token and settings.admin_telegram_id),
         has_mcp_api_key    = bool(settings.mcp_api_key),
         has_webhook_secret = bool(settings.webhook_secret),

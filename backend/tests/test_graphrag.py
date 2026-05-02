@@ -24,7 +24,7 @@ def graphrag_engine(mock_chroma, mock_graph_store):
         chroma_store=mock_chroma,
         graph_store=mock_graph_store,
         embedding_model="sentence-transformers/all-MiniLM-L6-v2",
-        anthropic_api_key="sk-ant-test",
+        ai_api_key="sk-ant-test",
         claude_model="claude-sonnet-4-20250514",
     )
 

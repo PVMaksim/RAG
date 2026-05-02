@@ -345,12 +345,7 @@ sse_transport = SseServerTransport("/mcp/messages/")
 
 
 async def handle_sse(request: Request):
-    async with sse_transport.connect_sse(
-        request.scope, request.receive, request._send
-    ) as streams:
-        await server.run(
-            streams[0], streams[1], server.create_initialization_options()
-        )
+    return await sse_transport.handle_sse(request)
 
 
 async def health(request: Request):

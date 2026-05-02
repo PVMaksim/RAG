@@ -11,10 +11,10 @@ services:
       context: .
       dockerfile: ./docker/backend/Dockerfile.test
     environment:
-      - AI_API_KEY=test-key-for-ci-cd
+      - AI_API_KEY=sk-or-v1-test-key
       - DEBUG=true
       - TELEGRAM_BOT_TOKEN=
-      - ADMIN_TELEGRAM_ID=
+      - ADMIN_TELEGRAM_ID=12345
     volumes:
       - ./backend/src:/app/src
       - ./backend/tests:/app/tests

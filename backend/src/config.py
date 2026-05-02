@@ -31,7 +31,7 @@ class Settings(BaseSettings):
 
     # ── Правила сканирования ──────────────────────────────────────────────
     rag_rules_path: Path = Field(
-        default=Path(__file__).parent.parent / "rag-rules.yaml",
+        default=Path("/app/rag-rules.yaml"),
         env="RAG_RULES_PATH",
     )
 

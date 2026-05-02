@@ -45,7 +45,7 @@ def get_query_engine() -> QueryEngine:
     return QueryEngine(
         chroma_store=get_chroma(),
         embedding_model=s.embedding_model,
-        anthropic_api_key=s.anthropic_api_key,
+        ai_api_key=s.ai_api_key,
         claude_model=s.claude_model,
         default_top_k=s.default_top_k,
     )
@@ -58,7 +58,7 @@ def get_graphrag() -> GraphRAGEngine:
         chroma_store=get_chroma(),
         graph_store=get_graph_store(),
         embedding_model=s.embedding_model,
-        anthropic_api_key=s.anthropic_api_key,
+        ai_api_key=s.ai_api_key,
         claude_model=s.claude_model,
     )
 

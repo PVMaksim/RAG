@@ -4,8 +4,12 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/health',
+        destination: 'http://backend:8000/health',
+      },
+      {
         source: '/api/:path*',
-        destination: `${process.env.BACKEND_URL || 'http://backend:8000'}/api/:path*`,
+        destination: 'http://backend:8000/api/:path*',
       },
     ]
   },

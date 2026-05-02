@@ -88,14 +88,14 @@ function SearchContent() {
       : mode === 'answer' ? 'answer'
       : ''
 
-    if (!endpoint) return
+    // endpoint check removed
 
     // При follow-up вопросе передаём историю треда
     const historyToSend = (mode === 'answer' && isFollowUp && thread.length > 0)
       ? thread.slice(-6)  // последние 3 хода
       : []
 
-    start(() => fetch(`${BASE}/search/${endpoint}`, {
+    start(() => fetch(`${BASE}/search/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

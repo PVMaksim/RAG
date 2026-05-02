@@ -92,12 +92,24 @@ export function streamSearch(
         // SSE: каждая строка "data: {...}\n\n"
         const lines = buffer.split('\n\n')
         buffer = lines.pop() ?? ''
+        let hasSSE = false
         for (const line of lines) {
           if (line.startsWith('data: ')) {
+            hasSSE = true
             try {
               onEvent(JSON.parse(line.slice(6)))
             } catch { /* skip malformed */ }
           }
+        }
+        console.log('[SSE Debug] buffer:', buffer.trim());
+        // Фоллбэк: если не SSE, пробуем распарсить как простой JSON
+        if (!hasSSE && buffer.trim()) {
+          try {
+            const json = JSON.parse(buffer.trim())
+            if (json.chunks) onEvent({ type: 'sources', chunks: json.chunks })
+            else if (json.sources) onEvent({ type: 'sources', chunks: json.sources })
+            else if (json.answer) onEvent({ type: 'token', text: json.answer })
+          } catch { /* not JSON either */ }
         }
       }
     })
@@ -106,6 +118,25 @@ export function streamSearch(
         onEvent({ type: 'error', message: String(err) })
       }
     })
+
+  // Фоллбэк для простого JSON: если res.body не поддерживается или ответ пришёл сразу
+  // (некоторые браузеры/прокси буферизируют ответ)
+  ;(async () => {
+    try {
+      const clone = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, project, top_k: topK, mode }),
+      })
+      if (clone.ok) {
+        const text = await clone.text()
+        const json = JSON.parse(text)
+        if (json.chunks) onEvent({ type: 'sources', chunks: json.chunks })
+        else if (json.sources) onEvent({ type: 'sources', chunks: json.sources })
+        else if (json.answer) onEvent({ type: 'token', text: json.answer })
+      }
+    } catch {}
+  })()
 
   return () => controller.abort()
 }

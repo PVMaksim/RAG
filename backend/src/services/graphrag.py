@@ -126,14 +126,14 @@ class GraphRAGEngine:
         chroma_store: ChromaStore,
         graph_store: GraphStore,
         embedding_model: str,
-        anthropic_api_key: str,
+        ai_api_key: str,
         claude_model: str,
     ) -> None:
         self._chroma = chroma_store
         self._graph = graph_store
         self._embedding_model_name = embedding_model
         self._claude_model = claude_model
-        self._anthropic = AsyncAnthropic(api_key=anthropic_api_key)
+        self._anthropic = AsyncAnthropic(api_key=ai_api_key)
         # Semaphore ограничивает параллельные вызовы Anthropic API
         # 3 = безопасный предел для tier-1 аккаунта
         self._api_semaphore = asyncio.Semaphore(3)

@@ -51,7 +51,7 @@ class QueryEngine:
         self,
         chroma_store: ChromaStore,
         embedding_model: str,
-        anthropic_api_key: str,
+        ai_api_key: str,
         claude_model: str,
         default_top_k: int = 5,
     ) -> None:
@@ -59,7 +59,7 @@ class QueryEngine:
         self._embedding_model_name = embedding_model
         self._claude_model = claude_model
         self._default_top_k = default_top_k
-        self._anthropic = AsyncAnthropic(api_key=anthropic_api_key)
+        self._anthropic = AsyncAnthropic(api_key=ai_api_key)
 
     @timed("embedding")
     async def _embed(self, text: str) -> list[float]:

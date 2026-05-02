@@ -70,7 +70,7 @@ def mock_graph_store():
 def mock_settings(tmp_path):
     """Мок настроек — не нужен реальный .env."""
     settings = MagicMock()
-    settings.anthropic_api_key = "sk-ant-test-key"
+    settings.ai_api_key = "sk-ant-test-key"
     settings.claude_model = "claude-sonnet-4-20250514"
     settings.embedding_model = "sentence-transformers/all-MiniLM-L6-v2"
     settings.default_top_k = 5

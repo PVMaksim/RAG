@@ -22,6 +22,8 @@ services:
       - backend
 
   frontend:
+    ports:
+      - "8081:3000"
     build:
       context: .
       dockerfile: ./docker/frontend/Dockerfile.dev
@@ -30,10 +32,13 @@ services:
       - /app/node_modules        # Не перетирать node_modules хостовыми
       - /app/.next               # Не перетирать .next хостовыми
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080/api
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_API_URL=http://localhost:8005/api
       - NODE_ENV=development
 
   backend:
+    ports:
+      - "8005:8000"
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile.dev
@@ -42,7 +47,7 @@ services:
       - ./backend/rag-rules.yaml:/app/rag-rules.yaml
       # ВАЖНО: монтируем твои локальные проекты
       # Замени ~/Documents/Projects на путь к своим проектам
-      - "/Users/macmax/Documents/Разработка IT"
+      - "/Users/macmax/Documents/Разработка IT:/app/projects"
       # Данные персистентны между перезапусками
       - chroma_data:/app/data/chroma_db
       - graph_data:/app/data
@@ -52,6 +57,7 @@ services:
       - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
       - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
     environment:
+      - HOSTNAME=0.0.0.0
       - DEBUG=true
       - PROJECTS_BASE_PATH=/app/projects
 
